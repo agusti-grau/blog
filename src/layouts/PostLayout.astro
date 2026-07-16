@@ -1,0 +1,115 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, author, tags, image } =
+  post.data;
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("ca-ES", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={image}
+  canonicalURL={`/blog/blog/${post.id}/`}
+>
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">{title}</h1>
+      <div class="post-meta">
+        <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+        {updatedDate && (
+          <span class="updated">
+            (actualitzat el {formatDate(updatedDate)})
+          </span>
+        )}
+        <span>per {author}</span>
+      </div>
+      <div class="post-tags">
+        {tags.map((tag) => (
+          <a href={`/blog/tags/${tag.toLowerCase()}/`} class="tag">{tag}</a>
+        ))}
+      </div>
+    </header>
+    <div class="post-content">
+      <slot />
+    </div>
+    <footer class="post-footer">
+      <hr />
+      <nav class="post-nav">
+        <a href="/blog/" class="back-link">&larr; Tornar als articles</a>
+      </nav>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    max-width: var(--max-width);
+  }
+
+  .post-header {
+    margin-bottom: 2rem;
+  }
+
+  .post-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .post-meta {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.75rem;
+  }
+
+  .post-meta .updated {
+    font-style: italic;
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    font-size: 0.8rem;
+    background-color: var(--color-card-bg);
+    color: var(--color-primary);
+    padding: 0.2em 0.6em;
+    border-radius: 20px;
+    border: 1px solid var(--color-primary);
+    transition: background-color var(--transition), color var(--transition);
+  }
+
+  .tag:hover {
+    background-color: var(--color-primary);
+    color: #fff;
+  }
+
+  .post-content :global(img) {
+    border-radius: var(--radius);
+    margin: 1.5rem 0;
+  }
+
+  .post-nav {
+    margin-top: 1rem;
+  }
+
+  .back-link {
+    font-size: 0.95rem;
+  }
+</style>

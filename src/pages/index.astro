@@ -1,0 +1,95 @@
+---
+import ListLayout from "../layouts/ListLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
+import { SITE_TITLE, SITE_DESC } from "../consts";
+
+const posts = await getCollection("blog");
+const sortedPosts = posts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const allTags = [...new Set(sortedPosts.flatMap((p) => p.data.tags))].sort();
+---
+
+<ListLayout>
+  <section class="hero">
+    <h1 class="hero-title">{SITE_TITLE}</h1>
+    <p class="hero-desc">{SITE_DESC}</p>
+  </section>
+
+  <div class="tag-cloud">
+    <span class="tag-label">Tags:</span>
+    {allTags.map((tag) => (
+      <a href={`/blog/tags/${tag.toLowerCase()}/`} class="tag">{tag}</a>
+    ))}
+  </div>
+
+  <section class="post-list">
+    <h2>Últims articles</h2>
+    {sortedPosts.length === 0 ? (
+      <p>Encara no hi ha articles publicats.</p>
+    ) : (
+      sortedPosts.map((post) => <PostCard post={post} />)
+    )}
+  </section>
+</ListLayout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 2rem 0 1rem;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-desc {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .tag-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+  }
+
+  .tag {
+    font-size: 0.8rem;
+    background-color: var(--color-card-bg);
+    color: var(--color-primary);
+    padding: 0.2em 0.6em;
+    border-radius: 20px;
+    border: 1px solid var(--color-primary);
+    transition: background-color var(--transition), color var(--transition);
+  }
+
+  .tag:hover {
+    background-color: var(--color-primary);
+    color: #fff;
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .post-list h2 {
+    margin-bottom: 0.25rem;
+  }
+</style>

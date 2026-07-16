@@ -1,0 +1,76 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { LINKEDIN_URL, GITHUB_URL, AUTHOR } from "../consts";
+---
+
+<BaseLayout title="Sobre mi">
+  <section class="about">
+    <h1>Sobre mi</h1>
+
+    <p>
+      Sóc administrador de sistemes amb <strong>18 anys d'experiència</strong> treballant amb tecnologies Microsoft: Azure, Windows, SCCM i Intune.
+      Aquest blog neix amb l'objectiu de compartir coneixement tècnic en català i ajudar a créixer la comunitat IT catalanoparlant.
+    </p>
+
+    <p>
+      Al llarg de la meva trajectòria professional, he participat en projectes de migració a Azure,
+      implantació de SCCM per a la gestió d'actualitzacions, desplegament d'Intune per a la gestió
+      de dispositius mòbils i administració de servidors Windows en entorns empresarials.
+    </p>
+
+    <p>
+      La meva motivació és oferir contingut de qualitat, en català, perquè altres professionals
+      del sector puguin trobar informació clara i pràctica sense haver de buscar-la en anglès.
+    </p>
+
+    <div class="about-links">
+      <h2>Contacte</h2>
+      <ul>
+        <li>
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+        </li>
+        <li>
+          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="license">
+      <h2>Llicència</h2>
+      <p>
+        Tot el contingut d'aquest blog està publicat sota la llicència
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ca" target="_blank" rel="noopener noreferrer">
+          Creative Commons BY-SA 4.0
+        </a>.
+        Pots compartir i adaptar el contingut sempre que n'atribueixis l'autoria i mantinguis la mateixa llicència.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about {
+    max-width: var(--max-width);
+  }
+
+  .about-links ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .about-links li {
+    margin-bottom: 0.5rem;
+  }
+
+  .license {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    background-color: var(--color-card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+  }
+</style>

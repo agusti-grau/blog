@@ -1,0 +1,55 @@
+---
+import ListLayout from "../../layouts/ListLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const allTags = [...new Set(posts.flatMap((p) => p.data.tags))];
+  return allTags.map((tag) => ({
+    params: { tag: tag.toLowerCase() },
+  }));
+}
+
+const { tag } = Astro.params as { tag: string };
+const posts = await getCollection("blog");
+const filtered = posts
+  .filter((p) =>
+    p.data.tags.some((t) => t.toLowerCase() === tag)
+  )
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const displayTag = filtered.length > 0 ? filtered[0].data.tags.find(
+  (t) => t.toLowerCase() === tag
+)! : tag;
+---
+
+<ListLayout title={`Tag: ${displayTag}`}>
+  <h1>Articles amb el tag: {displayTag}</h1>
+  <p class="count">{filtered.length} article{(filtered.length > 1) ? "s" : ""}</p>
+
+  <div class="post-list">
+    {filtered.map((post) => <PostCard post={post} />)}
+  </div>
+
+  <nav class="back-nav">
+    <a href="/blog/tags/">&larr; Totes les tags</a>
+  </nav>
+</ListLayout>
+
+<style>
+  .count {
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .back-nav {
+    margin-top: 2rem;
+  }
+</style>
