@@ -18,7 +18,7 @@ function formatDate(date: Date): string {
 ---
 
 <article class="post-card">
-  <a href={`/blog/blog/${post.id}/`} class="post-card-link">
+  <a href={`/blog/${post.id.replace(/\.mdx?$/, "")}/`} class="post-card-link">
     <h2 class="post-card-title">{title}</h2>
     <time class="post-card-date" datetime={pubDate.toISOString()}>
       {formatDate(pubDate)}

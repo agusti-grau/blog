@@ -23,7 +23,7 @@ function formatDate(date: Date): string {
   title={title}
   description={description}
   ogImage={image}
-  canonicalURL={`/blog/blog/${post.id}/`}
+  canonicalURL={`/blog/${post.id.replace(/\.mdx?$/, "")}/`}
 >
   <article class="post">
     <header class="post-header">
