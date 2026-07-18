@@ -6,16 +6,7 @@ export default defineConfig({
   site: 'https://agusti-grau.github.io',
   base: '/blog/',
   output: 'static',
-  integrations: [
-    mdx({
-      syntaxHighlight: 'shiki',
-      shikiConfig: {
-        theme: 'github-dark',
-        wrap: true,
-      },
-    }),
-    sitemap(),
-  ],
+  integrations: [mdx(), sitemap()],
   markdown: {
     syntaxHighlight: 'shiki',
     shikiConfig: {
